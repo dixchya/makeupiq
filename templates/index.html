@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>MakeupIQ — Find Your Perfect Match</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-light: #C8E6C9;
+            --green-mid: #81C784;
+            --green-main: #4CAF50;
+            --green-deep: #2E7D32;
+            --purple-light: #E1BEE7;
+            --purple-mid: #CE93D8;
+            --purple-main: #9C27B0;
+            --purple-deep: #6A1B9A;
+            --bg: #F3F8F3;
+            --white: #FFFFFF;
+            --text-dark: #1A2E1A;
+            --text-mid: #4A6741;
+            --text-light: #7A9478;
+            --card-bg: #FFFFFF;
+            --border: rgba(76, 175, 80, 0.2);
+            --shadow: 0 4px 20px rgba(46, 125, 50, 0.1);
+            --shadow-lg: 0 8px 40px rgba(46, 125, 50, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* ── App Shell — full width ── */
+        .app-shell {
+            width: 100%;
+            min-height: 100vh;
+            background: var(--white);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ── Screens ── */
+        .screen {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Header ── */
+        .screen-header {
+            background: linear-gradient(135deg, var(--green-deep) 0%, var(--purple-deep) 100%);
+            padding: 3rem 1.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen-header::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            top: -60px;
+            right: -40px;
+        }
+
+        .screen-header::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            bottom: -50px;
+            left: -30px;
+        }
+
+        .app-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: white;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-logo span { color: var(--green-light); font-style: italic; }
+
+        .header-subtitle {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.75);
+            margin-top: 0.4rem;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Screen body ── */
+        .screen-body {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green-main), var(--purple-main));
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--green-deep);
+            border: 2px solid var(--green-main);
+        }
+
+        .btn-secondary:hover {
+            background: var(--green-light);
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: #C62828;
+            border: 2px solid #EF5350;
+            border-radius: 50px;
+        }
+
+        .btn-danger:hover { background: #FFEBEE; }
+
+        .btn-small {
+            width: auto;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.8rem;
+        }
+
+        /* ── Welcome Screen ── */
+        #screen-welcome .screen-header {
+            padding: 4rem 1.5rem 3rem;
+        }
+
+        .welcome-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: white;
+            line-height: 1.3;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-title em { font-style: italic; color: var(--green-light); }
+
+        .welcome-desc {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 0.75rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--text-mid);
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .feature-icon.green { background: var(--green-light); }
+        .feature-icon.purple { background: var(--purple-light); }
+
+        .privacy-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(76, 175, 80, 0.08);
+            border: 1px solid var(--green-mid);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.78rem;
+            color: var(--green-deep);
+        }
+
+        /* ── Upload Screen ── */
+        .upload-zone {
+            border: 2px dashed var(--green-mid);
+            border-radius: 16px;
+            padding: 2rem 1rem;
+            text-align: center;
+            background: var(--bg);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--green-deep);
+            background: var(--green-light);
+        }
+
+        .upload-zone input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-icon-wrap {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green-light), var(--purple-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.8rem;
+        }
+
+        .upload-zone-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .upload-zone-sub {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .upload-preview {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .upload-preview img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .upload-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        /* ── Form elements ── */
+        .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+        .form-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-mid);
+        }
+
+        .form-select, .form-input {
+            padding: 0.75rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            background: var(--bg);
+            appearance: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-select:focus, .form-input:focus {
+            outline: none;
+            border-color: var(--green-main);
+        }
+
+        .select-wrap { position: relative; }
+        .select-wrap::after {
+            content: '▾';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, rgba(200,230,201,0.4), rgba(225,190,231,0.4));
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.78rem;
+            color: var(--text-mid);
+            line-height: 1.5;
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+
+        /* ── Loading ── */
+        #screen-loading .screen-body {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+        }
+
+        .loading-ring-wrap {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .loading-ring {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--green-light);
+            border-top-color: var(--green-main);
+            border-right-color: var(--purple-main);
+            animation: spin 1.2s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--text-dark);
+        }
+
+        .loading-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .loading-step {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            color: var(--text-light);
+            background: var(--bg);
+        }
+
+        .loading-step.done { color: var(--green-deep); }
+        .loading-step.active { color: var(--purple-deep); background: var(--purple-light); }
+
+        /* ── Results Screen ── */
+        .results-header {
+            background: linear-gradient(135deg, var(--green-deep), var(--purple-deep));
+            padding: 2rem 1.5rem 1.5rem;
+            text-align: center;
+        }
+
+        .swatch-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin: 0 auto 0.75rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .results-tone {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .results-undertone {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 0.3rem;
+        }
+
+        .tone-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+        }
+
+        .tone-tag {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Tabs ── */
+        .tabs {
+            display: flex;
+            background: var(--bg);
+            padding: 0.4rem;
+            border-radius: 12px;
+            gap: 0.25rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.6rem 0.4rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--green-deep);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ── Product Cards ── */
+        .products-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1rem;
+            transition: all 0.2s;
+        }
+
+        .product-card:hover {
+            border-color: var(--green-main);
+            box-shadow: var(--shadow);
+        }
+
+        .product-brand {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--purple-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            margin-bottom: 0.6rem;
+        }
+
+        .product-shade-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .shade-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--green-mid);
+            border: 2px solid white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+
+        .shade-info { flex: 1; }
+
+        .shade-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-light);
+        }
+
+        .shade-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--border);
+            margin-top: 0.5rem;
+        }
+
+        .product-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--green-deep);
+        }
+
+        .product-badges {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 50px;
+            background: var(--green-light);
+            color: var(--green-deep);
+            font-weight: 600;
+        }
+
+        .badge.purple { background: var(--purple-light); color: var(--purple-deep); }
+
+        .shop-link {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--purple-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        /* ── Style Guide ── */
+        .style-section { margin-bottom: 1rem; }
+
+        .style-section-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .style-names { display: flex; flex-direction: column; gap: 0.4rem; }
+
+        .style-name-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            padding: 0.5rem 0.75rem;
+            background: var(--bg);
+            border-radius: 8px;
+            border-left: 3px solid var(--green-main);
+        }
+
+        .colour-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .colour-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.75rem;
+            color: var(--text-mid);
+            padding: 0.25rem 0.6rem;
+            background: var(--bg);
+            border-radius: 50px;
+        }
+
+        .colour-chip-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .avoid-list {
+            font-size: 0.82rem;
+            color: #C62828;
+            background: #FFEBEE;
+            border-radius: 10px;
+            padding: 0.6rem 0.75rem;
+            line-height: 1.5;
+        }
+
+        /* ── Skin tip ── */
+        .skin-tip-card {
+            background: linear-gradient(135deg, rgba(200,230,201,0.5), rgba(225,190,231,0.5));
+            border-radius: 14px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .skin-tip-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--green-deep);
+            margin-bottom: 0.4rem;
+        }
+
+        .skin-tip-text {
+            font-size: 0.82rem;
+            color: var(--text-mid);
+            line-height: 1.5;
+        }
+
+        /* ── Privacy Screen ── */
+        .privacy-illustration {
+            text-align: center;
+            padding: 1.5rem 0;
+            font-size: 3rem;
+        }
+
+        .data-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .data-status-label {
+            font-size: 0.82rem;
+            color: var(--text-mid);
+        }
+
+        .data-status-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+        }
+
+        .status-stored { background: #FFF3E0; color: #E65100; }
+        .status-deleted { background: var(--green-light); color: var(--green-deep); }
+
+        /* ── Navigation footer ── */
+        .nav-footer {
+            display: flex;
+            justify-content: space-around;
+            padding: 0.75rem 1rem;
+            background: white;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            cursor: pointer;
+            padding: 0.4rem 0.75rem;
+            border-radius: 10px;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .nav-item.active { background: var(--green-light); }
+        .nav-item span:first-child { font-size: 1.2rem; }
+        .nav-item span:last-child { font-size: 0.6rem; color: var(--text-light); font-weight: 600; }
+        .nav-item.active span:last-child { color: var(--green-deep); }
+
+        /* ── Error ── */
+        .error-box {
+            background: #FFEBEE;
+            border: 1px solid #EF5350;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            color: #C62828;
+            display: none;
+            text-align: center;
+        }
+
+        /* ── Toast ── */
+        #toast {
+            position: fixed;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text-dark);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            z-index: 999;
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #toast.success { background: var(--green-deep); }
+        #toast.error { background: #C62828; }
+
+        /* ── Feedback screen ── */
+        .rating-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .rating-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--bg);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .rating-btn:hover, .rating-btn.selected {
+            border-color: var(--green-main);
+            background: var(--green-light);
+            transform: scale(1.1);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            background: var(--bg);
+            resize: none;
+            height: 100px;
+        }
+
+        textarea:focus { outline: none; border-color: var(--green-main); }
+
+        @media (max-width: 600px) {
+            .screen-body { padding: 1rem; }
+            .upload-buttons { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-shell">
+
+    <!-- ══ SCREEN: WELCOME ══ -->
+    <div class="screen active" id="screen-welcome">
+        <div class="screen-header">
+            <div class="app-logo">Makeup<span>IQ</span></div>
+            <div class="header-subtitle">Your inclusive makeup advisor</div>
+            <div class="welcome-title">Find your perfect match & <em>signature style</em></div>
+            <div class="welcome-desc">Upload a photo and MakeupIQ analyses your skin tone, undertone and features to give you personalised product recommendations.</div>
+        </div>
+        <div class="screen-body">
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon green">🎨</div>
+                    <div>Accurate shade matching for <strong>all skin tones</strong></div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon purple">✨</div>
+                    <div>Undertone guidance — warm, cool, neutral & olive</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon green">💄</div>
+                    <div>Personalised makeup style recommendations</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon purple">🛍️</div>
+                    <div>Products filtered by your budget & skin type</div>
+                </div>
+            </div>
+            <div class="privacy-badge">
+                🔒 <span>Your image is used only for analysis. You can delete it any time.</span>
+            </div>
+            <button class="btn btn-primary" onclick="showScreen('screen-upload')">Get Started</button>
+            <button class="btn btn-secondary" onclick="showScreen('screen-howitworks')">Learn how it works</button>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: HOW IT WORKS ══ -->
+    <div class="screen" id="screen-howitworks">
+        <div class="screen-header">
+            <div class="app-logo">Makeup<span>IQ</span></div>
+            <div class="header-subtitle">How it works</div>
+        </div>
+        <div class="screen-body">
+            <div class="card">
+                <div class="card-title">Four simple steps to your perfect match</div>
+                <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:0.75rem;">
+                    <div class="feature-item">
+                        <div class="feature-icon green" style="font-size:1.4rem;">📷</div>
+                        <div><strong>Step 1 — Upload</strong><br><span style="font-size:0.82rem;color:var(--text-light);">Take or upload a clear, front-facing photo in natural daylight. Avoid heavy filters for best results.</span></div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon purple" style="font-size:1.4rem;">🔬</div>
+                        <div><strong>Step 2 — Analyse</strong><br><span style="font-size:0.82rem;color:var(--text-light);">Our AI algorithm uses K-Means colour clustering to detect your skin tone depth and undertone from your image.</span></div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon green" style="font-size:1.4rem;">💄</div>
+                        <div><strong>Step 3 — Match</strong><br><span style="font-size:0.82rem;color:var(--text-light);">Products from real brands are matched to your exact shade. Filter by budget and skin type.</span></div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon purple" style="font-size:1.4rem;">✨</div>
+                        <div><strong>Step 4 — Style</strong><br><span style="font-size:0.82rem;color:var(--text-light);">Get a personalised makeup colour guide — lip shades, eyeshadow, blush and highlighter — all tailored to your undertone.</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">About the technology</div>
+                <div class="card-subtitle">MakeupIQ uses a K-Means machine learning algorithm to analyse your skin tone locally on our server — your image is never shared with third parties. You can delete your image at any time from the Privacy screen.</div>
+            </div>
+            <div class="privacy-badge">
+                🔒 <span>Your image is used only for analysis and can be permanently deleted at any time.</span>
+            </div>
+            <button class="btn btn-primary" onclick="showScreen('screen-upload')">Get Started →</button>
+            <button class="btn btn-secondary" onclick="showScreen('screen-welcome')">← Back</button>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: UPLOAD ══ -->
+    <div class="screen" id="screen-upload">
+        <div class="screen-header">
+            <div class="app-logo">Makeup<span>IQ</span></div>
+            <div class="header-subtitle">Step 1 of 2 — Upload your photo</div>
+        </div>
+        <div class="screen-body">
+            <div class="card">
+                <div class="card-title">Upload an image</div>
+                <div class="card-subtitle">For best results, use a clear front-facing photo in natural daylight with no heavy filters.</div>
+
+                <!-- Hidden file input -->
+                <input type="file" id="image-input" accept="image/*" style="display:none">
+
+                <!-- Two button options like wireframe -->
+                <div class="upload-buttons" style="margin-bottom:1rem;">
+                    <button class="btn btn-primary" onclick="openCamera()">
+                        📷 Take Photo
+                    </button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('image-input').click()">
+                        🖼️ Upload Image
+                    </button>
+                </div>
+
+                <!-- Drag and drop zone -->
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-icon-wrap">📁</div>
+                    <div class="upload-zone-title">Or drag & drop here</div>
+                    <div class="upload-zone-sub">JPG, PNG or WEBP · Natural light recommended</div>
+                </div>
+
+                <div class="upload-preview" id="upload-preview">
+                    <img id="preview-img" src="" alt="Preview">
+                </div>
+            </div>
+
+            <!-- ══ WEBCAM MODAL ══ -->
+            <div id="camera-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:999; display:none; flex-direction:column; align-items:center; justify-content:center; gap:1rem;">
+                <div style="background:white; border-radius:16px; padding:1.5rem; max-width:500px; width:90%; text-align:center;">
+                    <div style="font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--text-dark); margin-bottom:0.5rem;">Take your photo</div>
+                    <p style="font-size:0.8rem; color:var(--text-light); margin-bottom:1rem;">Position your face in the centre in natural light</p>
+                    <video id="webcam-video" autoplay playsinline style="width:100%; border-radius:12px; background:#000; max-height:300px;"></video>
+                    <canvas id="webcam-canvas" style="display:none;"></canvas>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-top:1rem;">
+                        <button class="btn btn-primary" onclick="capturePhoto()">📸 Capture</button>
+                        <button class="btn btn-secondary" onclick="closeCamera()">✕ Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">About your skin</div>
+                <div class="form-group">
+                    <label class="form-label">Skin Type</label>
+                    <div class="select-wrap">
+                        <select class="form-select" id="skin-type">
+                            <option value="normal">Normal</option>
+                            <option value="oily">Oily</option>
+                            <option value="dry">Dry</option>
+                            <option value="combination">Combination</option>
+                            <option value="sensitive">Sensitive</option>
+                            <option value="acne-prone">Acne-Prone</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top:0.75rem">
+                    <label class="form-label">Max Budget per product (£)</label>
+                    <input type="number" class="form-input" id="budget" placeholder="Leave blank for all budgets" min="1">
+                </div>
+            </div>
+
+            <div class="tip-box">
+                💡 <span>In order to accurately analyse your skin tone and undertone, please include your face in the photo. Avoid using photos with heavy filters.</span>
+            </div>
+
+            <div class="privacy-badge">
+                🔒 <span>I accept the <strong>terms and conditions</strong> — my facial image will only be used for analysis within this session.</span>
+            </div>
+
+            <div class="error-box" id="upload-error"></div>
+
+            <button class="btn btn-primary" id="analyse-btn" disabled onclick="runAnalysis()">
+                Analyse My Skin ✦
+            </button>
+            <button class="btn btn-secondary" onclick="showScreen('screen-welcome')">← Back</button>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: LOADING ══ -->
+    <div class="screen" id="screen-loading">
+        <div class="screen-header">
+            <div class="app-logo">Makeup<span>IQ</span></div>
+            <div class="header-subtitle">Analysing your complexion…</div>
+        </div>
+        <div class="screen-body">
+            <div class="loading-ring-wrap" style="margin:0 auto;">
+                <div class="loading-ring"></div>
+            </div>
+            <div class="loading-title">Just a moment…</div>
+            <div class="loading-steps">
+                <div class="loading-step active" id="step-1">🔍 Extracting skin tone from image</div>
+                <div class="loading-step" id="step-2">🎨 Detecting undertone</div>
+                <div class="loading-step" id="step-3">💄 Matching products to your shade</div>
+                <div class="loading-step" id="step-4">✨ Generating style guide</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: RESULTS ══ -->
+    <div class="screen" id="screen-results">
+        <div class="results-header">
+            <div class="swatch-circle" id="swatch-circle"></div>
+            <div class="results-tone" id="results-tone">Your Skin Tone</div>
+            <div class="results-undertone" id="results-undertone">Undertone detected</div>
+            <div class="tone-tags" id="tone-tags"></div>
+        </div>
+        <div class="screen-body">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="tab-foundations">Foundations</button>
+                <button class="tab-btn" data-tab="tab-concealers">Concealers</button>
+                <button class="tab-btn" data-tab="tab-powders">Powders</button>
+                <button class="tab-btn" data-tab="tab-style">Style</button>
+            </div>
+
+            <div class="tab-content active" id="tab-foundations">
+                <div class="skin-tip-card">
+                    <div class="skin-tip-title" id="tip-title">Skin Type Tips</div>
+                    <div class="skin-tip-text" id="tip-text"></div>
+                </div>
+                <div class="products-list" id="foundations-list"></div>
+            </div>
+
+            <div class="tab-content" id="tab-concealers">
+                <div class="products-list" id="concealers-list"></div>
+            </div>
+
+            <div class="tab-content" id="tab-powders">
+                <div class="products-list" id="powders-list"></div>
+            </div>
+
+            <div class="tab-content" id="tab-style">
+                <div id="style-content"></div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="showScreen('screen-privacy')" style="margin-top:0.5rem">
+                🔒 Manage My Data
+            </button>
+            <button class="btn btn-secondary" onclick="showScreen('screen-feedback')">
+                💬 Leave Feedback
+            </button>
+        </div>
+        <div class="nav-footer">
+            <button class="nav-item active" onclick="showScreen('screen-results')">
+                <span>🎨</span><span>Results</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('screen-privacy')">
+                <span>🔒</span><span>Privacy</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('screen-upload')">
+                <span>📷</span><span>New Scan</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('screen-feedback')">
+                <span>💬</span><span>Feedback</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: PRIVACY ══ -->
+    <div class="screen" id="screen-privacy">
+        <div class="screen-header">
+            <div class="app-logo">Makeup<span>IQ</span></div>
+            <div class="header-subtitle">Privacy & Data Control</div>
+        </div>
+        <div class="screen-body">
+            <div class="privacy-illustration">🔒</div>
+
+            <div class="card">
+                <div class="card-title">Your Data</div>
+                <div class="card-subtitle">MakeupIQ only stores your image temporarily for analysis within this session. You are in full control.</div>
+
+                <div class="data-status">
+                    <span class="data-status-label">📷 Facial image</span>
+                    <span class="data-status-badge status-stored" id="image-status">Stored</span>
+                </div>
+                <div class="data-status">
+                    <span class="data-status-label">🎨 Analysis results</span>
+                    <span class="data-status-badge status-stored">Session only</span>
+                </div>
+                <div class="data-status">
+                    <span class="data-status-label">👤 Personal info</span>
+                    <span class="data-status-badge status-stored">Not collected</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Delete My Image</div>
+                <div class="card-subtitle">Permanently remove your uploaded facial image from our system. This action cannot be undone.</div>
+                <button class="btn btn-danger" id="delete-btn" onclick="deleteImage()">
+                    🗑️ Delete My Image Permanently
+                </button>
+            </div>
+
+            <div class="tip-box">
+                🛡️ <span>MakeupIQ does not share your facial image with any third parties. Your data is never used for advertising or sold.</span>
+            </div>
+
+            <button class="btn btn-secondary" onclick="showScreen('screen-results')">← Back to Results</button>
+        </div>
+        <div class="nav-footer">
+            <button class="nav-item" onclick="showScreen('screen-results')">
+                <span>🎨</span><span>Results</span>
+            </button>
+            <button class="nav-item active" onclick="showScreen('screen-privacy')">
+                <span>🔒</span><span>Privacy</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('screen-upload')">
+                <span>📷</span><span>New Scan</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('screen-feedback')">
+                <span>💬</span><span>Feedback</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ SCREEN: FEEDBACK ══ -->
+    <div class="screen" id="screen-feedback">
+        <div class="screen-header">
+            <div class="app-logo">Makeup<span>IQ</span></div>
+            <div class="header-subtitle">We'd love your feedback</div>
+        </div>
+        <div class="screen-body">
+            <div class="card">
+                <div class="card-title">How accurate was your shade match?</div>
+                <div class="rating-row" id="rating-row">
+                    <button class="rating-btn" onclick="setRating(1)">😞</button>
+                    <button class="rating-btn" onclick="setRating(2)">😐</button>
+                    <button class="rating-btn" onclick="setRating(3)">🙂</button>
+                    <button class="rating-btn" onclick="setRating(4)">😊</button>
+                    <button class="rating-btn" onclick="setRating(5)">🤩</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Any comments?</div>
+                <textarea id="feedback-text" placeholder="Tell us how we can improve MakeupIQ…"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="submitFeedback()">Submit Feedback</button>
+            <button class="btn btn-secondary" onclick="showScreen('screen-results')">← Back to Results</button>
+        </div>
+        <div class="nav-footer">
+            <button class="nav-item" onclick="showScreen('screen-results')">
+                <span>🎨</span><span>Results</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('screen-privacy')">
+                <span>🔒</span><span>Privacy</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('screen-upload')">
+                <span>📷</span><span>New Scan</span>
+            </button>
+            <button class="nav-item active" onclick="showScreen('screen-feedback')">
+                <span>💬</span><span>Feedback</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────────
+let currentFilename = null;
+let selectedRating = null;
+
+// ── Screen Navigation ──────────────────────────────────────────────────────────
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+// ── Upload Handling ────────────────────────────────────────────────────────────
+const imageInput = document.getElementById('image-input');
+const analyseBtn = document.getElementById('analyse-btn');
+
+function handleFileSelect(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        document.getElementById('preview-img').src = ev.target.result;
+        document.getElementById('upload-preview').style.display = 'block';
+        analyseBtn.disabled = false;
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        imageInput.files = dt.files;
+    };
+    reader.readAsDataURL(file);
+}
+
+imageInput.addEventListener('change', (e) => handleFileSelect(e.target.files[0]));
+
+// ── Camera ─────────────────────────────────────────────────────────────────────
+let videoStream = null;
+
+async function openCamera() {
+    const modal = document.getElementById('camera-modal');
+    const video = document.getElementById('webcam-video');
+    modal.style.display = 'flex';
+    try {
+        videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+        video.srcObject = videoStream;
+    } catch (err) {
+        closeCamera();
+        showToast('Camera not available. Please upload a photo instead.', 'error');
+    }
+}
+
+function capturePhoto() {
+    const video = document.getElementById('webcam-video');
+    const canvas = document.getElementById('webcam-canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    canvas.toBlob((blob) => {
+        const file = new File([blob], 'webcam-photo.jpg', { type: 'image/jpeg' });
+        handleFileSelect(file);
+        closeCamera();
+        showToast('✓ Photo captured!', 'success');
+    }, 'image/jpeg', 0.9);
+}
+
+function closeCamera() {
+    const modal = document.getElementById('camera-modal');
+    modal.style.display = 'none';
+    if (videoStream) {
+        videoStream.getTracks().forEach(track => track.stop());
+        videoStream = null;
+    }
+}
+
+const uploadZone = document.getElementById('upload-zone');
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+        imageInput.files = e.dataTransfer.files;
+        imageInput.dispatchEvent(new Event('change'));
+    }
+});
+
+// ── Loading Animation ──────────────────────────────────────────────────────────
+function animateLoadingSteps() {
+    const steps = ['step-1', 'step-2', 'step-3', 'step-4'];
+    let i = 0;
+    const interval = setInterval(() => {
+        if (i > 0) {
+            document.getElementById(steps[i-1]).classList.remove('active');
+            document.getElementById(steps[i-1]).classList.add('done');
+            document.getElementById(steps[i-1]).textContent = '✓ ' + document.getElementById(steps[i-1]).textContent.slice(2);
+        }
+        if (i < steps.length) {
+            document.getElementById(steps[i]).classList.add('active');
+            i++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 800);
+}
+
+// ── Run Analysis ───────────────────────────────────────────────────────────────
+async function runAnalysis() {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    const errorBox = document.getElementById('upload-error');
+    errorBox.style.display = 'none';
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('skin_type', document.getElementById('skin-type').value);
+    const budget = document.getElementById('budget').value;
+    if (budget) formData.append('budget', budget);
+
+    showScreen('screen-loading');
+
+    // Reset loading steps
+    ['step-1','step-2','step-3','step-4'].forEach(id => {
+        const el = document.getElementById(id);
+        el.className = 'loading-step';
+    });
+    document.getElementById('step-1').classList.add('active');
+    animateLoadingSteps();
+
+    try {
+        const response = await fetch('/analyse', { method: 'POST', body: formData });
+        const data = await response.json();
+
+        if (!data.success) throw new Error(data.error || 'Analysis failed');
+
+        currentFilename = data.filename;
+        renderResults(data);
+
+        setTimeout(() => showScreen('screen-results'), 3500);
+
+    } catch (err) {
+        showScreen('screen-upload');
+        errorBox.textContent = err.message || 'Something went wrong. Please try again with a clearer photo.';
+        errorBox.style.display = 'block';
+    }
+}
+
+// ── Render Results ─────────────────────────────────────────────────────────────
+function cap(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
+
+function renderResults(data) {
+    const { analysis, recommendations, style_guide, skin_tips, skin_type } = data;
+
+    document.getElementById('swatch-circle').style.background = analysis.hex_colour;
+    document.getElementById('results-tone').textContent = `${cap(analysis.tone_depth)} Skin Tone`;
+    document.getElementById('results-undertone').textContent = `${cap(analysis.undertone)} Undertone Detected`;
+
+    const tags = document.getElementById('tone-tags');
+    tags.innerHTML = `
+        <span class="tone-tag">${cap(analysis.tone_depth)}</span>
+        <span class="tone-tag">${cap(analysis.undertone)} undertone</span>
+        <span class="tone-tag">${cap(skin_type)} skin</span>
+        <span class="tone-tag">${analysis.hex_colour.toUpperCase()}</span>
+    `;
+
+    document.getElementById('tip-title').textContent = `Tips for ${cap(skin_type)} Skin`;
+    document.getElementById('tip-text').textContent = `${skin_tips.tip} Recommended finish: ${skin_tips.finish}. Avoid: ${skin_tips.avoid}.`;
+
+    renderProductList('foundations-list', recommendations.foundation);
+    renderProductList('concealers-list', recommendations.concealer);
+    renderProductList('powders-list', recommendations.powder);
+    renderStyleGuide(style_guide);
+}
+
+function renderProductList(listId, products) {
+    const list = document.getElementById(listId);
+    if (!products || products.length === 0) {
+        list.innerHTML = '<p style="font-size:0.82rem;color:var(--text-light);text-align:center;padding:1rem;">No products match your filters. Try adjusting your budget.</p>';
+        return;
+    }
+    list.innerHTML = products.map(p => `
+        <div class="product-card">
+            <div class="product-brand">${p.brand}</div>
+            <div class="product-name">${p.name}</div>
+            <div class="product-shade-row">
+                <div class="shade-dot"></div>
+                <div class="shade-info">
+                    <div class="shade-label">Your Shade</div>
+                    <div class="shade-name">${p.recommended_shade}</div>
+                </div>
+            </div>
+            <div class="product-badges">
+                ${p.finish ? `<span class="badge">${p.finish}</span>` : ''}
+                ${p.coverage ? `<span class="badge purple">${p.coverage}</span>` : ''}
+                ${p.skin_compatible ? `<span class="badge">✓ Suits your skin</span>` : ''}
+            </div>
+            <div class="product-footer">
+                <div class="product-price">£${p.price}</div>
+                <a href="${p.link}" target="_blank" class="shop-link">Shop now →</a>
+            </div>
+        </div>
+    `).join('');
+}
+
+const COLOUR_MAP = {
+    'terracotta':'#C25B3F','burnt orange':'#CC5500','warm gold':'#C9A96E','copper':'#B87333',
+    'caramel brown':'#8B5A2B','rose pink':'#FF91A4','mauve':'#B09DA0','berry':'#7B2D4E',
+    'cool taupe':'#8E8178','icy lilac':'#C4B9D9','warm olive':'#7A8C5E','earthy green':'#5C6E4A',
+    'gold':'#C9A96E','burnt sienna':'#A0522D','deep plum':'#4E1A3C','soft rose':'#F2B8C0',
+    'warm nude':'#D4A58A','dusty pink':'#D4A0A7','taupe':'#907A78','soft caramel':'#C4965A',
+    'peach':'#FFCBA4','warm apricot':'#F2A872','earthy rose':'#C4856A','silver':'#C0C0C0',
+    'pearl':'#EAE6E1','champagne':'#F7E7CE','rose gold':'#E8B4A0','bronze':'#CD7F32',
+    'warm browns':'#8B5E3C','warm greens':'#6B8C5E',
+};
+
+function colourChip(name) {
+    const hex = COLOUR_MAP[name.toLowerCase()] || '#81C784';
+    return `<span class="colour-chip"><span class="colour-chip-dot" style="background:${hex}"></span>${name}</span>`;
+}
+
+function renderStyleGuide(guide) {
+    document.getElementById('style-content').innerHTML = `
+        <div class="style-section">
+            <div class="style-section-label">Your Makeup Styles</div>
+            <div class="style-names">
+                ${guide.recommended_styles.map(s => `<div class="style-name-item">✦ ${s}</div>`).join('')}
+            </div>
+        </div>
+        <div class="style-section">
+            <div class="style-section-label">Your Colour Palette</div>
+            <div class="colour-chips">${guide.colour_palette.map(colourChip).join('')}</div>
+        </div>
+        <div class="style-section">
+            <div class="style-section-label">Lip Colours</div>
+            <div class="colour-chips">${guide.lip_colours.map(colourChip).join('')}</div>
+        </div>
+        <div class="style-section">
+            <div class="style-section-label">Eyeshadow</div>
+            <div class="colour-chips">${guide.eyeshadow.map(colourChip).join('')}</div>
+        </div>
+        <div class="style-section">
+            <div class="style-section-label">Blush</div>
+            <div class="colour-chips">${guide.blush.map(colourChip).join('')}</div>
+        </div>
+        <div class="style-section">
+            <div class="style-section-label">Avoid</div>
+            <div class="avoid-list">✕ ${guide.avoid.join(' · ')}</div>
+        </div>
+        <div class="style-section">
+            <div class="style-section-label">About Your Undertone</div>
+            <div class="tip-box">💡 <span>${guide.description}</span></div>
+        </div>
+    `;
+}
+
+// ── Delete ─────────────────────────────────────────────────────────────────────
+async function deleteImage() {
+    if (!currentFilename) { showToast('No image to delete', 'error'); return; }
+    try {
+        const res = await fetch('/delete-single', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ filename: currentFilename })
+        });
+        const data = await res.json();
+        if (data.success) {
+            showToast('✓ Image permanently deleted', 'success');
+            currentFilename = null;
+            document.getElementById('image-status').textContent = 'Deleted';
+            document.getElementById('image-status').className = 'data-status-badge status-deleted';
+            document.getElementById('delete-btn').disabled = true;
+            document.getElementById('delete-btn').textContent = '✓ Image Deleted';
+        } else {
+            showToast(data.error || 'Could not delete', 'error');
+        }
+    } catch(e) { showToast('Connection error', 'error'); }
+}
+
+// ── Feedback ───────────────────────────────────────────────────────────────────
+function setRating(r) {
+    selectedRating = r;
+    document.querySelectorAll('.rating-btn').forEach((btn, i) => {
+        btn.classList.toggle('selected', i === r - 1);
+    });
+}
+
+function submitFeedback() {
+    showToast('✓ Thank you for your feedback!', 'success');
+    setTimeout(() => showScreen('screen-results'), 1500);
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+});
+
+// ── Toast ──────────────────────────────────────────────────────────────────────
+function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `show ${type}`;
+    setTimeout(() => { t.className = ''; }, 3000);
+}
+</script>
+</body>
+</html>
