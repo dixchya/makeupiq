@@ -1382,7 +1382,7 @@ function renderResults(data) {
 function renderProductList(listId, products) {
     const list = document.getElementById(listId);
     if (!products || products.length === 0) {
-        list.innerHTML = '<p style="font-size:0.82rem;color:var(--text-light);text-align:center;padding:1rem;">No products match your filters. Try adjusting your budget.</p>';
+        list.innerHTML = '';
         return;
     }
     list.innerHTML = products.map(p => `
