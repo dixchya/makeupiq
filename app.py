@@ -139,6 +139,7 @@ def rgb_to_hex(r, g, b):
 
 def analyse_skin_tone(image_path):
     img = Image.open(image_path).convert('RGB')
+    img = img.resize((800, 800), Image.LANCZOS) if max(img.size) > 800 else img
     
     w, h = img.size
     left = int(w * 0.3)
