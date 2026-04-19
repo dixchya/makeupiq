@@ -34,7 +34,7 @@ PRODUCTS = {
         {"name": "Revolution Conceal & Define Full Coverage Foundation", "brand": "Revolution", "shades": {"fair-cool": "F0.5", "fair-neutral": "F1", "fair-warm": "F1.5", "light-cool": "F2", "light-neutral": "F3", "light-warm": "F4", "medium-cool": "F5", "medium-neutral": "F6", "medium-warm": "F7", "tan-cool": "F8", "tan-neutral": "F9", "tan-warm": "F10", "deep-cool": "F11", "deep-neutral": "F12", "deep-warm": "F13", "rich-cool": "F14", "rich-neutral": "F15", "rich-warm": "F16"}, "finish": "Natural", "coverage": "Full", "price": 8, "skin_types": ["all"], "link": "https://www.makeuprevolution.com"},
     ],
     "concealer": [
-        {"name": "Touche Éclat All-Over Brightening Pen", "brand": "YSL", "shades": {"fair-cool": "1", "fair-neutral": "1.5", "fair-warm": "2", "light-cool": "2.5", "light-neutral": "3", "light-warm": "3.5", "medium-cool": "4", "medium-neutral": "4.5", "medium-warm": "5", "tan-cool": "5.5", "tan-neutral": "6", "tan-warm": "6.5", "deep-cool": "7", "deep-neutral": "7.5", "deep-warm": "8", "rich-cool": "8.5", "rich-neutral": "9", "rich-warm": "9.5"}, "coverage": "Light", "price": 33, "skin_types": ["all"], "link": "https://www.yslbeauty.co.uk"},
+        {"name": "Touche Eclat All-Over Brightening Pen", "brand": "YSL", "shades": {"fair-cool": "1", "fair-neutral": "1.5", "fair-warm": "2", "light-cool": "2.5", "light-neutral": "3", "light-warm": "3.5", "medium-cool": "4", "medium-neutral": "4.5", "medium-warm": "5", "tan-cool": "5.5", "tan-neutral": "6", "tan-warm": "6.5", "deep-cool": "7", "deep-neutral": "7.5", "deep-warm": "8", "rich-cool": "8.5", "rich-neutral": "9", "rich-warm": "9.5"}, "coverage": "Light", "price": 33, "skin_types": ["all"], "link": "https://www.yslbeauty.co.uk"},
         {"name": "Shape Tape Full Coverage Concealer", "brand": "Tarte", "shades": {"fair-cool": "8S Fair", "fair-neutral": "12N Fair", "fair-warm": "16W Fair", "light-cool": "20S Light", "light-neutral": "22N Light", "light-warm": "24W Light", "medium-cool": "29S Medium", "medium-neutral": "32N Medium", "medium-warm": "35W Medium", "tan-cool": "42S Tan", "tan-neutral": "44N Tan", "tan-warm": "46W Tan", "deep-cool": "53S Deep", "deep-neutral": "55N Deep", "deep-warm": "57W Deep", "rich-cool": "63S Rich", "rich-neutral": "65N Rich", "rich-warm": "67W Rich"}, "coverage": "Full", "price": 27, "skin_types": ["oily", "combination"], "link": "https://tartecosmetics.com"},
         {"name": "Makeup Revolution Conceal & Define", "brand": "Revolution", "shades": {"fair-cool": "C1", "fair-neutral": "C2", "fair-warm": "C3", "light-cool": "C4", "light-neutral": "C5", "light-warm": "C6", "medium-cool": "C8", "medium-neutral": "C9", "medium-warm": "C10", "tan-cool": "C12", "tan-neutral": "C13", "tan-warm": "C14", "deep-cool": "C15", "deep-neutral": "C16", "deep-warm": "C17", "rich-cool": "C18", "rich-neutral": "C19", "rich-warm": "C20"}, "coverage": "Full", "price": 5, "skin_types": ["all"], "link": "https://www.makeuprevolution.com"},
         {"name": "16HR Camo Concealer", "brand": "e.l.f.", "shades": {"fair-cool": "Fair Ivory", "fair-neutral": "Fair", "fair-warm": "Light Ivory", "light-cool": "Light", "light-neutral": "Light Beige", "light-warm": "Warm Light", "medium-cool": "Medium", "medium-neutral": "Medium Beige", "medium-warm": "Warm Medium", "tan-cool": "Tan", "tan-neutral": "Medium Tan", "tan-warm": "Warm Tan", "deep-cool": "Deep", "deep-neutral": "Deep Caramel", "deep-warm": "Warm Deep", "rich-cool": "Rich Ebony", "rich-neutral": "Rich", "rich-warm": "Warm Rich"}, "coverage": "Full", "price": 8, "skin_types": ["all"], "link": "https://www.elfcosmetics.co.uk"},
@@ -80,7 +80,7 @@ MAKEUP_STYLES = {
         "blush": ["soft peach-pink", "rose beige", "dusty rose"],
         "eyeshadow": ["neutral taupes", "champagne", "soft browns", "rosy mauve"],
         "highlighter": ["champagne", "rose gold"],
-        "description": "Lucky you — neutral undertones suit both warm and cool palettes. You have incredible versatility. Focus on MLBB (My Lips But Better) tones and your natural skin tone as a guide."
+        "description": "Lucky you - neutral undertones suit both warm and cool palettes. You have incredible versatility. Focus on MLBB (My Lips But Better) tones and your natural skin tone as a guide."
     },
     "olive": {
         "recommended_styles": ["Mediterranean Glow", "Earthy Luxe", "Sun-Kissed Radiance"],
@@ -111,9 +111,9 @@ SKIN_TYPE_TIPS = {
         "avoid": "Heavy oils on the T-zone"
     },
     "normal": {
-        "tip": "You have the most flexibility — nearly any formula works. Focus on the finish you prefer.",
+        "tip": "You have the most flexibility - nearly any formula works. Focus on the finish you prefer.",
         "finish": "Any",
-        "avoid": "Nothing specific — experiment!"
+        "avoid": "Nothing specific - experiment!"
     },
     "sensitive": {
         "tip": "Choose fragrance-free, hypoallergenic and mineral formulas. Always patch test new products.",
@@ -138,14 +138,8 @@ def rgb_to_hex(r, g, b):
 
 
 def analyse_skin_tone(image_path):
-    """
-    Analyses the dominant skin tone in the uploaded image using K-Means clustering.
-    Samples the centre region of the image (most likely to be face/skin).
-    Returns tone category, undertone, hex colour and confidence metrics.
-    """
     img = Image.open(image_path).convert('RGB')
     
-    # Crop to the centre 40% of the image to focus on facial skin
     w, h = img.size
     left = int(w * 0.3)
     top = int(h * 0.2)
@@ -156,19 +150,16 @@ def analyse_skin_tone(image_path):
     img_array = np.array(img_cropped)
     pixels = img_array.reshape(-1, 3).astype(float)
     
-    # Filter out very dark (shadows) and very light (highlights/background) pixels
     brightness = pixels.mean(axis=1)
     skin_pixels = pixels[(brightness > 40) & (brightness < 230)]
     
     if len(skin_pixels) < 100:
-        skin_pixels = pixels  # fallback if filtering too aggressive
+        skin_pixels = pixels
     
-    # K-Means to find dominant colour clusters
     n_clusters = min(5, len(skin_pixels))
     kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
     kmeans.fit(skin_pixels)
     
-    # Pick the most represented cluster as the dominant skin tone
     counts = np.bincount(kmeans.labels_)
     dominant_idx = np.argmax(counts)
     dominant_colour = kmeans.cluster_centers_[dominant_idx]
@@ -176,7 +167,6 @@ def analyse_skin_tone(image_path):
     r, g, b = dominant_colour
     hex_colour = rgb_to_hex(r, g, b)
     
-    # Determine skin tone depth from luminance
     luminance = 0.299 * r + 0.587 * g + 0.114 * b
     
     if luminance > 200:
@@ -192,12 +182,6 @@ def analyse_skin_tone(image_path):
     else:
         tone_depth = "rich"
     
-    # Determine undertone using colour channel ratios
-    # Warm: high R relative to B, yellowish
-    # Cool: high B relative to R, pinkish
-    # Olive: green channel prominent relative to red/blue balance
-    # Neutral: balanced
-    
     r_b_diff = r - b
     g_balance = g - (r + b) / 2
     
@@ -210,7 +194,6 @@ def analyse_skin_tone(image_path):
     else:
         undertone = "neutral"
     
-    # Convert to HSV for additional insight
     h_val, s_val, v_val = colorsys.rgb_to_hsv(r/255, g/255, b/255)
     hue_degrees = h_val * 360
     
@@ -229,32 +212,22 @@ def analyse_skin_tone(image_path):
 
 
 def get_recommendations(tone_key, skin_type, budget_max=None, preferred_brands=None):
-    """
-    Generates personalised product recommendations based on skin tone key and skin type.
-    Skin type filtering only applies to foundations. Concealers and powders show all products.
-    Optionally filters by budget and brand.
-    """
     recommendations = {}
     
     for category, products in PRODUCTS.items():
         matched = []
         for product in products:
-            # Budget filter
-            if budget_max and product['price'] > budget_max:
+            if budget_max is not None and product['price'] > budget_max:
                 continue
             
-            # Brand filter
             if preferred_brands and product['brand'].lower() not in [b.lower() for b in preferred_brands]:
                 continue
             
-            # Skin type compatibility — only strictly filter foundations
             compatible = ('all' in product.get('skin_types', ['all']) or 
                          skin_type in product.get('skin_types', ['all']))
             
-            # Get the shade for this tone
             shade = product.get('shades', {}).get(tone_key)
             if not shade:
-                # Try fallback to nearest tone depth
                 depth = tone_key.split('-')[0]
                 shade = next((v for k, v in product.get('shades', {}).items() 
                              if k.startswith(depth)), "Ask in-store")
@@ -271,7 +244,6 @@ def get_recommendations(tone_key, skin_type, budget_max=None, preferred_brands=N
                 "skin_type_note": "" if compatible else "Check compatibility with your skin type"
             })
         
-        # Sort: compatible first, then by price
         matched.sort(key=lambda x: (not x['skin_compatible'], x['price']))
         recommendations[category] = matched
     
@@ -300,32 +272,33 @@ def analyse():
     if not allowed_file(file.filename):
         return jsonify({'error': 'Invalid file type. Please upload a JPG, PNG or WEBP image.'}), 400
     
-    # Save with unique filename
     file_ext = file.filename.rsplit('.', 1)[1].lower()
     unique_filename = f"{uuid.uuid4().hex}.{file_ext}"
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
     file.save(file_path)
     
-    # Store filename in session for deletion
     if 'uploaded_files' not in session:
         session['uploaded_files'] = []
     session['uploaded_files'] = session.get('uploaded_files', []) + [unique_filename]
     session.modified = True
     
     try:
-        # Run skin tone analysis
         analysis = analyse_skin_tone(file_path)
         tone_key = analysis['tone_key']
         
-        # Get product recommendations
-        budget_max = int(budget) if budget and budget.isdigit() else None
+        # Budget validation — negative or zero values return no results
+        try:
+            budget_max = int(budget) if budget else None
+            if budget_max is not None and budget_max <= 0:
+                budget_max = -1
+        except ValueError:
+            budget_max = None
+        
         recommendations = get_recommendations(tone_key, skin_type, budget_max)
         
-        # Get makeup style suggestions
         undertone = analysis['undertone']
         style_guide = MAKEUP_STYLES.get(undertone, MAKEUP_STYLES['neutral'])
         
-        # Skin type tips
         skin_tips = SKIN_TYPE_TIPS.get(skin_type, SKIN_TYPE_TIPS['normal'])
         
         return jsonify({
@@ -339,7 +312,6 @@ def analyse():
         })
     
     except Exception as e:
-        # Clean up file if analysis fails
         if os.path.exists(file_path):
             os.remove(file_path)
         return jsonify({'error': f'Analysis failed: {str(e)}'}), 500
@@ -347,10 +319,6 @@ def analyse():
 
 @app.route('/delete-data', methods=['POST'])
 def delete_data():
-    """
-    Permanently deletes all uploaded images for this session.
-    Satisfies FR5 and NFR4 (user privacy and data deletion).
-    """
     deleted_count = 0
     uploaded_files = session.get('uploaded_files', [])
     
@@ -378,7 +346,6 @@ def delete_single():
     if not filename:
         return jsonify({'error': 'No filename provided'}), 400
     
-    # Security: only allow deletion of files belonging to this session
     session_files = session.get('uploaded_files', [])
     if filename not in session_files:
         return jsonify({'error': 'Unauthorised'}), 403
